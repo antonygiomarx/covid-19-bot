@@ -1,13 +1,13 @@
-import { sendMessage } from './sendMessage';
-import { setMessage } from './setMessage';
-import { getData } from './getData';
-import { config } from 'src/config/config';
+import { sendMessage } from "./sendMessage";
+import { setMessage } from "./setMessage";
+import { getData } from "./getData";
+import { config } from "src/config/config";
 
 const { uri, pageToken } = config;
 
 export const command = {
   countries: async (senderId: string, allCountries?: boolean) => {
-    const data = await getData('/countries');
+    const data = await getData("/countries");
     const countries = [];
     data.forEach((el: { Country: any }) => {
       countries.push(el.Country);
@@ -36,9 +36,9 @@ export const command = {
   },
 
   country: async (senderId: string, country: string) => {
-    const data = await getData('/countries');
+    const data = await getData("/countries");
     let thisCountry;
-    data.forEach(async (el) => {
+    data.forEach(async el => {
       thisCountry = el.Country;
 
       thisCountry = thisCountry.toLowerCase();

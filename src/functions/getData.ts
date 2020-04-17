@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { config } from 'src/config/config';
+import axios from "axios";
+import { config } from "src/config/config";
 
 const uri = config.uriApi;
 export const getData = async (endpoint = `/`) => {

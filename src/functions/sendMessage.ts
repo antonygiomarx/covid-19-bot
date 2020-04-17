@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { Message } from 'src/types/Message';
+import axios from "axios";
+import { Message } from "src/types/Message";
 
 export const sendMessage = async (
   message: Message,
@@ -9,7 +9,7 @@ export const sendMessage = async (
   try {
     await axios.post(uri, message, {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`
       },
       withCredentials: true
