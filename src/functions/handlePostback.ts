@@ -1,8 +1,8 @@
-import { defaultMessage } from './defaultMessage';
-import { sendMessage } from './sendMessage';
-import { messages } from 'src/config/messages';
-import { config } from 'src/config/config';
-import { setMessage } from './setMessage';
+import { defaultMessage } from "./defaultMessage";
+import { sendMessage } from "./sendMessage";
+import { messages } from "src/config/messages";
+import { config } from "src/config/config";
+import { setMessage } from "./setMessage";
 
 const { info, info2 } = messages;
 const { uri, pageToken } = config;
@@ -13,7 +13,7 @@ export const handlePostback = async (
 ): Promise<any> => {
   switch (payload) {
     //Al recibir Get Started
-    case 'GET_STARTED_COVID-19-BOT':
+    case "GET_STARTED_COVID-19-BOT":
       console.log(payload);
       sendMessage(
         setMessage(
@@ -24,11 +24,11 @@ export const handlePostback = async (
         pageToken
       );
       break;
-    case 'BOT_INFO':
+    case "BOT_INFO":
       await sendMessage(setMessage(senderId, info), uri, pageToken);
       await sendMessage(setMessage(senderId, info2), uri, pageToken);
       break;
-    case 'BOT_COUNTRIES':
+    case "BOT_COUNTRIES":
       break;
     default:
       defaultMessage(senderId);

@@ -1,5 +1,5 @@
-import { handlePostback } from './handlePostback';
-import { handleMessage } from './handleMessage';
+import { handlePostback } from "./handlePostback";
+import { handleMessage } from "./handleMessage";
 
 export const handleEvent = async (
   senderId: string,

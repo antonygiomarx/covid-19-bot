@@ -1,4 +1,4 @@
-import { Message } from 'src/types/Message';
+import { Message } from "src/types/Message";
 
 export const setMessage = (senderId: string, message: Message) => {
   message = {
