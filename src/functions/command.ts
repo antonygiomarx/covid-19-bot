@@ -6,12 +6,11 @@ import { config } from 'src/config/config';
 const { uri, pageToken } = config;
 
 export const command = {
-  countries: async (senderId: string, allCountries?) => {
+  countries: async (senderId: string, allCountries?: boolean) => {
     const data = await getData('/countries');
     const countries = [];
-    data.forEach(el => {
-      const country = el.Country;
-      countries.push(country);
+    data.forEach((el: { Country: any }) => {
+      countries.push(el.Country);
     });
     if (!allCountries) {
       sendMessage(
@@ -23,21 +22,23 @@ export const command = {
         pageToken
       );
     } else {
-      sendMessage(
-        setMessage(
-          senderId,
-          `Los países donde el virus ha afectado son ${countries}`
-        ),
-        uri,
-        pageToken
-      );
+      console.log(countries);
+
+      // sendMessage(
+      //   setMessage(
+      //     senderId,
+      //     `Los países donde el virus ha afectado son ${countries}`
+      //   ),
+      //   uri,
+      //   pageToken
+      // );
     }
   },
 
   country: async (senderId: string, country: string) => {
     const data = await getData('/countries');
     let thisCountry;
-    data.forEach(async el => {
+    data.forEach(async (el) => {
       thisCountry = el.Country;
 
       thisCountry = thisCountry.toLowerCase();

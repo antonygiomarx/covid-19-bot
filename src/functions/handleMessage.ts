@@ -6,7 +6,7 @@ import { config } from 'src/config/config';
 const { uri, pageToken } = config;
 
 export const handleMessage = async (senderId: string, message: string) => {
-  message = message.toLowerCase().trim();
+  message = message.trim().toLowerCase();
 
   if (message.includes('!countries')) {
     if (message.includes('all')) {
