@@ -12,7 +12,7 @@ export class Webhook {
     if (req.query['hub.verify_token'] == token) {
       res.send(req.query['hub.challenge']).status(200);
     }
-    return res.send('No tienes acceso').status(401);
+    return res.json('No tienes acceso').status(401);
   }
 
   @Post()
