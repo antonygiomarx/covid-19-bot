@@ -1,19 +1,19 @@
-import { Controller, Post, Get, Res, Req } from "@nestjs/common";
-import { Response, Request } from "express";
-import { config } from "../config/config";
-import { handleEvent } from "../functions/handleEvent";
+import { Controller, Post, Get, Res, Req } from '@nestjs/common';
+import { Response, Request } from 'express';
+import { config } from '../config/config';
+import { handleEvent } from '../functions/handleEvent';
 
 const token = config.token;
 
-@Controller("/webhook")
+@Controller('/webhook')
 export class Webhook {
   @Get()
   async verifyGet(@Req() req: Request, @Res() res: Response) {
-    if (req.query["hub.verify_token"] == token) {
-      res.send(req.query["hub.challenge"]).status(200);
-    } else {
-      res.send("No tienes acceso").status(401);
+    if (req.query['hub.verify_token'] == token) {
+      res.send(req.query['hub.challenge']).status(200);
+      return;
     }
+    return res.send('No tienes acceso').status(401);
   }
 
   @Post()
@@ -23,6 +23,8 @@ export class Webhook {
       webhookEvent.messaging.forEach((event: any) => {
         handleEvent(event.sender.id, event);
       });
+      return;
     }
+    return console.log(webhookEvent);
   }
 }
