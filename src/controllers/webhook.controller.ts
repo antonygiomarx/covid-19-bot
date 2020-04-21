@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Res, Req } from '@nestjs/common';
+import { Controller, Post, Get, Res, Req, Header } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { config } from '../config/config';
 import { handleEvent } from '../functions/handleEvent';
@@ -8,11 +8,12 @@ const token = config.token;
 @Controller('/webhook')
 export class Webhook {
   @Get()
+  @Header('Content-Type', 'text/plain')
   async verifyGet(@Req() req: Request, @Res() res: Response) {
     if (req.query['hub.verify_token'] == token) {
       res.send(req.query['hub.challenge']).status(200);
     }
-    return res.json('No tienes acceso').status(401);
+    return res.status(401).send('No tienes acceso');
   }
 
   @Post()
