@@ -8,12 +8,11 @@ const token = config.token;
 @Controller('/webhook')
 export class Webhook {
   @Get()
-  @Header('Content-Type', 'text/plain')
   async verifyGet(@Req() req: Request, @Res() res: Response) {
     if (req.query['hub.verify_token'] == token) {
       res.send(req.query['hub.challenge']).status(200);
     }
-    return res.status(401).send('No tienes acceso');
+    return res.send('No tienes acceso');
   }
 
   @Post()
