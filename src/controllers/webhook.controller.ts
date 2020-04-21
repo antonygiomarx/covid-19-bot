@@ -11,7 +11,6 @@ export class Webhook {
   async verifyGet(@Req() req: Request, @Res() res: Response) {
     if (req.query['hub.verify_token'] == token) {
       res.send(req.query['hub.challenge']).status(200);
-      return;
     }
     return res.send('No tienes acceso').status(401);
   }
