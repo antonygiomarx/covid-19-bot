@@ -1,28 +1,30 @@
-import { Controller, Post, Req } from '@nestjs/common';
-import { Response, Request, Router } from 'express';
+import { Controller, Post, Req, Get, Res } from '@nestjs/common';
+import { Response, Request } from 'express';
 import { config } from '../config/config';
 import { handleEvent } from '../functions/handleEvent';
-const router = Router();
+
 const token = config.token;
 
-router.get('/webhook', (req: Request, res: Response) => {
-  if (req.query['hub.verify_token'] == token) {
-    res.send(req.query['hub.challenge']).status(200);
-  } else {
-    res.send('No tienes acceso');
-  }
-});
-
-export default router;
-@Controller('/webhook')
+@Controller('/api/webhook')
 export class Webhook {
+  @Get()
+  async verifyGet(@Req() req: Request, @Res() res: Response) {
+    if (req.query['hub.verify_token'] == token) {
+      res.send(req.query['hub.challenge']).status(200);
+    }
+    return res.send('No tienes acceso');
+  }
+
   @Post()
   async verifyPost(@Req() req: Request) {
     const webhookEvent = req.body.entry[0];
-    if (webhookEvent.messaging) {
-      webhookEvent.messaging.forEach((event: any) => {
-        handleEvent(event.sender.id, event);
-      });
+    if (webhookEvent) {
+      if (webhookEvent.messaging) {
+        webhookEvent.messaging.forEach((e: any) => {
+          handleEvent(e.sender.id, e);
+        });
+      }
+      return console.log(webhookEvent);
     }
   }
 }
