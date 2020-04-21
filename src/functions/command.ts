@@ -1,13 +1,18 @@
-import { sendMessage } from "./sendMessage";
-import { setMessage } from "./setMessage";
-import { getData } from "./getData";
-import { config } from "src/config/config";
+import { sendMessage } from './sendMessage';
+import { setMessage } from './setMessage';
+import { getData } from './getData';
+import { config } from 'src/config/config';
+import {
+  translateCountryToEs,
+  translateCountryFromEs
+} from './translateCountry';
+import { countries } from 'src/config/countries';
 
 const { uri, pageToken } = config;
 
 export const command = {
   countries: async (senderId: string, allCountries?: boolean) => {
-    const data = await getData("/countries");
+    const data = await getData('/countries');
     const countries = [];
     data.forEach((el: { Country: any }) => {
       countries.push(el.Country);
@@ -22,8 +27,7 @@ export const command = {
         pageToken
       );
     } else {
-      console.log(countries);
-
+      // console.log(countries);
       // sendMessage(
       //   setMessage(
       //     senderId,
@@ -36,30 +40,70 @@ export const command = {
   },
 
   country: async (senderId: string, country: string) => {
-    const data = await getData("/countries");
-    let thisCountry;
-    data.forEach(async el => {
-      thisCountry = el.Country;
+    const data = await getData('/summary');
+    let thisCountry: string, thisCountryES: string, countryData;
+    country = country.toLowerCase();
 
-      thisCountry = thisCountry.toLowerCase();
+    if (country.includes('estados unidos' || 'estadosunidos' || 'usa')) {
+      country = 'united states of america';
+    }
 
-      if (country.includes(thisCountry)) {
-        const getCountryData = async () => {
-          const data = await getData(
-            `/live/country/${thisCountry}/status/confirmed`
-          );
-          return data;
-        };
-        const countryData = await getCountryData();
+    countries.forEach((c) => {
+      if (country.includes(c.nombre.toLowerCase())) {
+        thisCountryES = c.nombre;
+      }
+    });
+
+    try {
+      thisCountryES = thisCountryES.toLowerCase();
+    } catch (error) {}
+
+    if (!thisCountryES) {
+      data.Countries.forEach(async (el: { Country: string }) => {
+        if (country.includes(el.Country.toLowerCase())) {
+          thisCountry = el.Country;
+          thisCountry = thisCountry.toLowerCase();
+        }
+      });
+    }
+
+    if (country.includes(thisCountry) || country.includes(thisCountryES)) {
+      try {
+        if (thisCountryES) {
+          thisCountryES = translateCountryFromEs(thisCountryES);
+        }
+      } catch (error) {}
+
+      if (thisCountry) {
+        data.Countries.forEach((element) => {
+          if (thisCountry == element.Country.toLowerCase()) {
+            countryData = element;
+          }
+        });
+      } else if (thisCountryES) {
+        data.Countries.forEach((element) => {
+          if (thisCountryES.toLowerCase() == element.Country.toLowerCase()) {
+            countryData = element;
+          }
+        });
+      }
+
+      try {
         sendMessage(
           setMessage(
             senderId,
-            `Actualmente en ${countryData[0].Country} hay ${countryData[0].Confirmed} casos confirmados, de los cuales ${countryData[0].Active} casos están activos, hay ${countryData[0].Deaths} muertes y ${countryData[0].Recovered} personas recuperadas.`
+            `Actualmente en ${translateCountryToEs(
+              countryData.Country
+            )} hay de ${countryData.TotalConfirmed} casos confirmados, ${
+              countryData.TotalDeaths
+            } muertes y ${countryData.TotalRecovered} personas recuperadas.`
           ),
           uri,
           pageToken
         );
+      } catch (e) {
+        console.log(e);
       }
-    });
+    }
   }
 };
