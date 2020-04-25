@@ -1,12 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { config } from './config/config';
 import cors = require('cors');
 import morgan = require('morgan');
 import { urlencoded } from 'express';
 import bodyParser = require('body-parser');
+import { Port } from './types/Types';
+import { config } from './config/config';
 
-const port: string = config.port;
+const port: Port = config.port;
 
 async function init(): Promise<void> {
   const app = await NestFactory.create(AppModule);

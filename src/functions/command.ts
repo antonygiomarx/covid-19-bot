@@ -7,6 +7,7 @@ import {
   translateCountryFromEs
 } from './translateCountry';
 import { countries } from 'src/config/countries';
+import { CountryData } from 'src/types/Types';
 
 const { uri, pageToken } = config;
 
@@ -41,7 +42,7 @@ export const command = {
 
   country: async (senderId: string, country: string) => {
     const data = await getData('/summary');
-    let thisCountry: string, thisCountryES: string, countryData;
+    let thisCountry: string, thisCountryES: string, countryData: CountryData;
     country = country.toLowerCase();
 
     if (country.includes('estados unidos' || 'estadosunidos' || 'usa')) {
