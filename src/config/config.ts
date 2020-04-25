@@ -1,9 +1,9 @@
-import { Config } from 'src/types/Types';
+import { Config } from "src/types/Config";
 
-require('dotenv').config();
+require("dotenv").config();
 
 export const config: Config = {
-  uriApi: 'https://api.covid19api.com',
+  uriApi: "https://api.covid19api.com",
   port: process.env.PORT || 3000,
   token: process.env.TOKEN || null,
   pageToken: process.env.PAGE_TOKEN || null,

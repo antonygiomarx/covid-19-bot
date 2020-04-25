@@ -7,9 +7,11 @@ import { handleEvent } from '../functions/handleEvent';
 export class WebhookController {
   @Get()
   getRoute(@Req() req: Request, @Res() res: Response) {
-    req.query['hub.verify_token'] == config.token
-      ? res.send(req.query['hub.challenge']).status(200)
-      : res.send('No tienes acceso').status(403);
+    if (req.query['hub.verify_token'] == config.token) {
+      res.send(req.query['hub.challenge']).status(200);
+      return;
+    }
+    return res.send('No tienes acceso').status(403);
   }
 
   @Post()
