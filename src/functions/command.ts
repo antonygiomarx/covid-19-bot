@@ -1,13 +1,13 @@
+import { config } from 'src/config/config';
+import { countries } from 'src/config/countries';
+import { CountryData } from 'src/types/Types';
 import { sendMessage } from './sendMessage';
 import { setMessage } from './setMessage';
 import { getData } from './getData';
-import { config } from 'src/config/config';
 import {
   translateCountryToEs,
-  translateCountryFromEs
+  translateCountryFromEs,
 } from './translateCountry';
-import { countries } from 'src/config/countries';
-import { CountryData } from 'src/types/Types';
 
 const { uri, pageToken } = config;
 
@@ -22,10 +22,10 @@ export const command = {
       sendMessage(
         setMessage(
           senderId,
-          `Actualmente el virus se encuentra en ${countries.length} países.\n\n[Escribe la palabra "!country [Nombre del país]" para mostrar los países donde se encuentra.]`
+          `Actualmente el virus se encuentra en ${countries.length} países.\n\n[Escribe la palabra "!country [Nombre del país]" para mostrar los países donde se encuentra.]`,
         ),
         uri,
-        pageToken
+        pageToken,
       );
     } else {
       // console.log(countries);
@@ -42,7 +42,8 @@ export const command = {
 
   country: async (senderId: string, country: string) => {
     const data = await getData('/summary');
-    let thisCountry: string, thisCountryES: string, countryData: CountryData;
+    let thisCountry: string; let thisCountryES: string; let
+      countryData: CountryData;
     country = country.toLowerCase();
 
     if (country.includes('estados unidos' || 'estadosunidos' || 'usa')) {
@@ -94,17 +95,17 @@ export const command = {
           setMessage(
             senderId,
             `Actualmente en ${translateCountryToEs(
-              countryData.Country
+              countryData.Country,
             )} hay de ${countryData.TotalConfirmed} casos confirmados, ${
               countryData.TotalDeaths
-            } muertes y ${countryData.TotalRecovered} personas recuperadas.`
+            } muertes y ${countryData.TotalRecovered} personas recuperadas.`,
           ),
           uri,
-          pageToken
+          pageToken,
         );
       } catch (e) {
         console.log(e);
       }
     }
-  }
+  },
 };

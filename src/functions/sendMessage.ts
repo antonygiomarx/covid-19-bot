@@ -4,15 +4,15 @@ import { Message } from 'src/types/Types';
 export const sendMessage = async (
   message: Message,
   uri: string,
-  token: string
+  token: string,
 ): Promise<any> => {
   try {
     await axios.post(uri, message, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      withCredentials: true
+      withCredentials: true,
     });
   } catch (error) {}
 };

@@ -1,4 +1,6 @@
-import { Controller, Post, Req, Get, Res } from '@nestjs/common';
+import {
+  Controller, Post, Req, Get, Res,
+} from '@nestjs/common';
 import { Request, Response } from 'express';
 import { config } from '../config/config';
 import { handleEvent } from '../functions/handleEvent';
